@@ -108,7 +108,7 @@ export function EventDetailBody({ event }: { event: EventRecord }) {
               {event.tags.map((tag, i) => (
                 <span
                   key={`${tag.category}:${tag.tag}:${i}`}
-                  className="rounded border border-zinc-700 bg-zinc-900 px-1.5 py-0.5 font-mono text-[11px] text-zinc-300"
+                  className="rounded border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-[11px] text-zinc-300"
                   title={tag.category}
                 >
                   {tag.tag}
@@ -123,7 +123,7 @@ export function EventDetailBody({ event }: { event: EventRecord }) {
             <h4 className="mb-2 font-mono text-xs uppercase tracking-widest text-zinc-400">{t("detail.sensors", locale)}</h4>
             <div className="flex flex-wrap gap-1">
               {event.sensors.map((s) => (
-                <span key={s} className="rounded border border-zinc-700 bg-zinc-900 px-1.5 py-0.5 font-mono text-xs text-zinc-300">{s}</span>
+                <span key={s} className="rounded border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs text-zinc-300">{s}</span>
               ))}
             </div>
           </section>
@@ -134,7 +134,7 @@ export function EventDetailBody({ event }: { event: EventRecord }) {
             <h4 className="mb-2 font-mono text-xs uppercase tracking-widest text-zinc-400">{t("detail.witnesses", locale)}</h4>
             <div className="flex flex-wrap gap-1">
               {event.witnesses.map((w, i) => (
-                <span key={i} className="rounded border border-zinc-700 bg-zinc-900 px-1.5 py-0.5 font-mono text-xs text-zinc-300">{w}</span>
+                <span key={i} className="rounded border border-zinc-700 bg-zinc-900 px-2 py-1 font-mono text-xs text-zinc-300">{w}</span>
               ))}
             </div>
           </section>

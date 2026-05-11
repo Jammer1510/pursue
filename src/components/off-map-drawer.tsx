@@ -20,11 +20,16 @@ export function OffMapDrawer({ offEarth, unknown, onSelect }: OffMapDrawerProps)
   if (total === 0) return null;
 
   return (
-    <div className="absolute left-4 top-4 z-[400] max-h-[calc(100vh-7rem)] overflow-hidden rounded border border-zinc-700 bg-zinc-900/95 font-mono text-xs text-zinc-300 shadow-lg backdrop-blur">
+    <div
+      className={cn(
+        "fixed inset-x-0 bottom-0 z-[400] overflow-hidden border-t border-zinc-700 bg-zinc-900/95 font-mono text-xs text-zinc-300 shadow-lg backdrop-blur",
+        "md:absolute md:inset-x-auto md:bottom-auto md:left-4 md:top-4 md:max-h-[calc(100vh-7rem)] md:rounded md:border"
+      )}
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-3 px-3 py-2 text-left hover:bg-zinc-800"
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-zinc-800 md:px-3 md:py-2"
         aria-expanded={open}
       >
         <span className="uppercase tracking-widest text-zinc-400">
@@ -34,7 +39,7 @@ export function OffMapDrawer({ offEarth, unknown, onSelect }: OffMapDrawerProps)
       </button>
 
       {open && (
-        <div className="max-h-[calc(100vh-10rem)] overflow-y-auto border-t border-zinc-800 px-2 py-2">
+        <div className="max-h-[60vh] overflow-y-auto border-t border-zinc-800 px-2 py-2 md:max-h-[calc(100vh-10rem)]">
           {offEarth.length > 0 && (
             <Section
               label={`${t("drawer.offEarth", locale)} (${offEarth.length})`}

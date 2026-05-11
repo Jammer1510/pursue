@@ -6,9 +6,11 @@ import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import type { EventSummary, EventLocation } from "@/lib/types";
 import { EventDetailInline } from "./event-detail-inline";
+import { EventDetailPanel } from "./event-detail-panel";
 import { OffMapDrawer } from "./off-map-drawer";
 import { formatDate, bustClasses } from "@/lib/format";
 import { useLocale } from "./locale-provider";
+import { useIsMobile } from "@/lib/use-media-query";
 
 function pinColor(score: number | null): string {
   if (score == null) return "#52525b";
@@ -19,6 +21,7 @@ function pinColor(score: number | null): string {
 
 export function MapView({ events, locations }: { events: EventSummary[]; locations: EventLocation[] }) {
   const { locale } = useLocale();
+  const isMobile = useIsMobile();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const mapRef = useRef<LeafletMap | null>(null);
 
@@ -34,6 +37,10 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  useEffect(() => {
+    requestAnimationFrame(() => mapRef.current?.invalidateSize());
+  }, [isMobile]);
 
   const eventById = useMemo(() => new Map(events.map((e) => [e.id, e])), [events]);
 
@@ -89,7 +96,7 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
   }, [events, locations, eventById]);
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] w-full">
+    <div className="flex h-[calc(100vh-3.5rem)] w-full flex-col md:flex-row">
       <div className="relative flex-1">
         <MapContainer
           center={[20, 0]}
@@ -109,7 +116,7 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
               <CircleMarker
                 key={loc.id}
                 center={[lat, lng]}
-                radius={7}
+                radius={isMobile ? 11 : 7}
                 pathOptions={{ color: fillColor, fillColor, fillOpacity: 0.7, weight: 1 }}
                 eventHandlers={{ click: () => setSelectedId(event.id) }}
               >
@@ -128,11 +135,15 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
         </MapContainer>
         <OffMapDrawer offEarth={offEarth} unknown={unknown} onSelect={setSelectedId} />
       </div>
-      <EventDetailInline
-        selectedId={selectedId}
-        onClose={() => setSelectedId(null)}
-        onCollapseChange={handleCollapseChange}
-      />
+      {isMobile ? (
+        <EventDetailPanel selectedId={selectedId} onClose={() => setSelectedId(null)} />
+      ) : (
+        <EventDetailInline
+          selectedId={selectedId}
+          onClose={() => setSelectedId(null)}
+          onCollapseChange={handleCollapseChange}
+        />
+      )}
     </div>
   );
 }

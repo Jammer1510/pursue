@@ -115,7 +115,7 @@ export function ConnectionsClient({ aggregates }: { aggregates: TagAggregate[] }
                           type="button"
                           onClick={() => toggle(a.category, a.tag)}
                           className={cn(
-                            "rounded border px-2 py-0.5 font-mono text-[11px] transition-colors",
+                            "rounded border px-2.5 py-1 font-mono text-[11px] transition-colors",
                             sel
                               ? "border-emerald-500 bg-emerald-500/10 text-emerald-200"
                               : "border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500"

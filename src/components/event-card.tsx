@@ -8,7 +8,15 @@ import { useLocale } from "./locale-provider";
 import { pickField } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-export function EventCard({ event, onClick }: { event: EventSummary; onClick: () => void }) {
+export function EventCard({
+  event,
+  onClick,
+  fullWidth = false,
+}: {
+  event: EventSummary;
+  onClick: () => void;
+  fullWidth?: boolean;
+}) {
   const { locale } = useLocale();
   const title = pickField(event, "title", locale) || event.folder_name;
   const incidentLocation = pickField(event, "incident_location", locale);
@@ -16,7 +24,8 @@ export function EventCard({ event, onClick }: { event: EventSummary; onClick: ()
     <button
       onClick={onClick}
       className={cn(
-        "group flex w-72 shrink-0 flex-col items-start gap-2 rounded-md border border-zinc-800 border-l-4 bg-zinc-950 p-3 text-left transition-colors hover:border-zinc-600 hover:bg-zinc-900",
+        "group flex flex-col items-start gap-2 rounded-md border border-zinc-800 border-l-4 bg-zinc-950 p-3 text-left transition-colors hover:border-zinc-600 hover:bg-zinc-900",
+        fullWidth ? "w-full" : "w-72 shrink-0",
         agencyAccent(event.agency)
       )}
     >

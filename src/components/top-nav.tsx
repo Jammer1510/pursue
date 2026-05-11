@@ -20,7 +20,7 @@ export function TopNav() {
       </nav>
       <div className="flex items-center gap-3">
         <LocaleToggle />
-        <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-600">
+        <span className="hidden font-mono text-[10px] uppercase tracking-widest text-zinc-600 sm:inline-block">
           local · v0
         </span>
       </div>
