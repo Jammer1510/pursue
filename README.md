@@ -1,6 +1,6 @@
 # PURSUE.ARCHIVE
 
-PURSUE.ARCHIVE is a public browser for a curated set of 120 UAP-related records. It turns a locally ingested SQLite archive into a static, shareable Next.js site with timeline, map, browse, detail, connection, translation, and scoring views.
+PURSUE.ARCHIVE is a public browser for a curated set of 120 UAP-related records. It turns a locally ingested SQLite archive into a static, shareable Next.js site with timeline, map, browse, detail, connections, translation, and scoring views.
 
 Live site: https://pursue-ten.vercel.app/
 
@@ -9,7 +9,7 @@ Live site: https://pursue-ten.vercel.app/
 - Timeline view of all ingested records.
 - Map view for geocoded event locations.
 - Browse table with client-side filtering and MiniSearch search.
-- Event detail panels with claims, source links, summaries, tags, bust scoring, and cover-up scoring.
+- Event detail panels with claims, source links, summaries, tags, anomaly scoring, and concealment scoring.
 - Connections view for finding events that share extracted tags.
 - English and Chinese UI/content fields where translations are available.
 - Static JSON deployment path for Vercel: no runtime database and no production API keys required.
@@ -27,7 +27,7 @@ Live site: https://pursue-ten.vercel.app/
 
 ## Data Model
 
-The local ingest pipeline writes records to `data/pursue.db`, which is intentionally gitignored. Sprint 7 adds a static export workflow that generates committed JSON files under `public/data`:
+The local ingest pipeline writes records to `data/pursue.db`, which is intentionally gitignored. The static export workflow generates committed JSON files under `public/data`:
 
 - `public/data/summaries.json`
 - `public/data/locations.json`
@@ -98,7 +98,7 @@ On Vercel, `build:data` detects the Vercel environment and uses the committed `p
 
 The project code is licensed under MIT. The source documents, extracted records, linked URLs, and public-record content may have their own source terms or public-record status. This repository does not claim ownership over original government/public source materials referenced by the dataset.
 
-Generated metadata such as tags, translations, summaries, and scoring fields are included to make the archive easier to browse. They should be treated as research aids, not authoritative determinations.
+Automated metadata such as tags, translations, summaries, and scoring fields are included to make the archive easier to browse. They should be treated as research aids, not authoritative determinations.
 
 ## License
 

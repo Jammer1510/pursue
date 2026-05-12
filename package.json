@@ -1,8 +1,17 @@
 {
   "name": "pursue-webapp",
   "version": "0.1.0",
+  "description": "Interactive public archive browser for UAP-related records.",
   "private": true,
   "license": "MIT",
+  "homepage": "https://pursue-ten.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jammer1510/pursue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jammer1510/pursue/issues"
+  },
   "scripts": {
     "dev": "next dev",
     "build:data": "tsx scripts/build-static.ts",
