@@ -28,7 +28,7 @@ export function EventDetailPanel({
 
   const className =
     side === "bottom"
-      ? "max-h-[70vh] overflow-y-auto rounded-t-lg border-t border-zinc-800 bg-zinc-950 text-zinc-200"
+      ? "max-h-[92vh] overflow-y-auto rounded-t-lg border-t border-zinc-800 bg-zinc-950 text-zinc-200"
       : "w-full overflow-y-auto border-zinc-800 bg-zinc-950 text-zinc-200 sm:!max-w-3xl lg:!max-w-4xl xl:!max-w-5xl";
 
   return (
