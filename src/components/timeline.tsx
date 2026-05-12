@@ -36,7 +36,7 @@ export function Timeline({ events }: { events: EventSummary[] }) {
                 {items.length} doc{items.length === 1 ? "" : "s"}
               </span>
             </div>
-            <div className="flex flex-1 gap-3 overflow-x-auto pb-2">
+            <div className="flex-1 min-w-0 overflow-x-auto pb-2 flex gap-3">
               {items.map((e) => (
                 <EventCard key={e.id} event={e} onClick={() => setSelectedId(e.id)} />
               ))}
