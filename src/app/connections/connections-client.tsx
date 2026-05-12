@@ -205,17 +205,17 @@ export function ConnectionsClient({ aggregates }: { aggregates: TagAggregate[] }
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-mono text-sm text-zinc-100">
+                          <div className="break-words font-mono text-sm text-zinc-100">
                             {title}
                           </div>
                           <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 font-mono text-[11px] text-zinc-500">
-                            <span>{e.agency || "—"}</span>
-                            <span>·</span>
-                            <span>{formatDate(e)}</span>
+                            <span className="shrink-0">{e.agency || "—"}</span>
+                            <span className="shrink-0">·</span>
+                            <span className="shrink-0">{formatDate(e)}</span>
                             {loc && (
                               <>
-                                <span>·</span>
-                                <span className="truncate">{loc}</span>
+                                <span className="shrink-0">·</span>
+                                <span className="break-words">{loc}</span>
                               </>
                             )}
                           </div>

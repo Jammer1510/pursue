@@ -38,7 +38,7 @@ export function EventDetailBody({ event }: { event: EventRecord }) {
             <span className="font-mono text-xs text-zinc-500">· {incidentLocation}</span>
           )}
         </div>
-        <h2 className="font-mono text-base leading-snug text-zinc-100">{title}</h2>
+        <h2 className="break-words font-mono text-base leading-snug text-zinc-100">{title}</h2>
       </header>
 
       <div className="space-y-6 px-4 py-5">
@@ -172,7 +172,7 @@ export function EventDetailBody({ event }: { event: EventRecord }) {
               {showText ? "▼" : "▶"} {t("detail.fullText", locale)}
             </CollapsibleTrigger>
             <CollapsibleContent className="mt-2 max-h-96 overflow-y-auto rounded border border-zinc-800 bg-zinc-900/50 p-3 font-mono text-xs leading-relaxed text-zinc-300">
-              <div className="prose prose-invert prose-sm max-w-none">
+              <div className="prose prose-invert prose-sm max-w-none break-words">
                 <ReactMarkdown>{event.full_text}</ReactMarkdown>
               </div>
             </CollapsibleContent>
@@ -188,7 +188,7 @@ function MetaRow({ label, value }: { label: string; value: string | null }) {
   return (
     <section>
       <h4 className="mb-1 font-mono text-xs uppercase tracking-widest text-zinc-400">{label}</h4>
-      <p className="text-sm text-zinc-200">{value}</p>
+      <p className="break-words text-sm text-zinc-200">{value}</p>
     </section>
   );
 }

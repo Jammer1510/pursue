@@ -25,7 +25,7 @@ export function EventCard({
       onClick={onClick}
       className={cn(
         "group flex flex-col items-start gap-2 rounded-md border border-zinc-800 border-l-4 bg-zinc-950 p-3 text-left transition-colors hover:border-zinc-600 hover:bg-zinc-900",
-        fullWidth ? "w-full" : "w-72 shrink-0",
+        fullWidth ? "w-full" : "w-[280px] sm:w-72 shrink-0",
         agencyAccent(event.agency)
       )}
     >
@@ -33,7 +33,7 @@ export function EventCard({
         <span className="font-mono text-xs text-zinc-500">{formatDate(event)}</span>
         <BustPill score={event.bust_score} />
       </div>
-      <h3 className="line-clamp-3 font-mono text-sm leading-snug text-zinc-100">{title}</h3>
+      <h3 className="line-clamp-3 w-full break-words font-mono text-sm leading-snug text-zinc-100">{title}</h3>
       <div className="flex w-full items-center justify-between gap-2 pt-1">
         <AgencyBadge agency={event.agency} />
         <span className="truncate text-xs text-zinc-500">{incidentLocation ?? "—"}</span>
