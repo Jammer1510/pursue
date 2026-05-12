@@ -28,6 +28,7 @@
     "@base-ui/react": "^1.4.1",
     "@google/generative-ai": "^0.24.1",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "better-sqlite3": "^12.9.0",
     "class-variance-authority": "^0.7.1",
     "cli-progress": "^3.12.0",
