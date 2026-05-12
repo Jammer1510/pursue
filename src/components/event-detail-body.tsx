@@ -30,7 +30,7 @@ export function EventDetailBody({ event }: { event: EventRecord }) {
 
   return (
     <>
-      <header className="space-y-2 border-b border-zinc-800 px-4 py-4">
+      <header className="space-y-2 border-b border-zinc-800 px-4 py-4 pr-14">
         <div className="flex flex-wrap items-center gap-2">
           <AgencyBadge agency={event.agency} />
           <span className="font-mono text-xs text-zinc-500">{formatDate(event)}</span>
