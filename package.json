@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "build:data": "tsx scripts/build-static.ts",
+    "prebuild": "npm run build:data",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "ingest": "tsx scripts/ingest.ts",
+    "refresh": "npm run ingest && npm run build:data",
     "calibrate": "tsx scripts/ingest.ts --only 001,035,112,116,120 --force",
     "typecheck": "tsc --noEmit"
   },
@@ -23,6 +26,7 @@
     "gray-matter": "^4.0.3",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.14.0",
+    "minisearch": "^7.2.0",
     "next": "16.2.6",
     "papaparse": "^5.5.3",
     "react": "19.2.4",

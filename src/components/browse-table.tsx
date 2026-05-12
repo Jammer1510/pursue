@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { EventFilters, EventSummary } from "@/lib/types";
+import {
+  createEventSearchIndex,
+  filterEventsClient,
+  type EventSearchDocument,
+} from "@/lib/search";
 import { Filters } from "./filters";
 import { EventCard } from "./event-card";
 import { EventDetailPanel } from "./event-detail-panel";
@@ -24,13 +29,45 @@ export function BrowseTable({
   documentTypes: string[];
   total: number;
 }) {
-  const [rows, setRows] = useState(initial);
   const [filters, setFilters] = useState<EventFilters>({});
+  const [searchDocs, setSearchDocs] = useState<EventSearchDocument[] | null>(null);
+  const canSyncUrl = useRef(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const { locale } = useLocale();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const next: EventFilters = {};
+    const agencies = params.get("agencies");
+    if (agencies) next.agencies = agencies.split(",").filter(Boolean);
+    const documentTypes = params.get("documentTypes");
+    if (documentTypes) next.documentTypes = documentTypes.split(",").filter(Boolean);
+    const yearMin = params.get("yearMin");
+    if (yearMin) next.yearMin = parseInt(yearMin, 10);
+    const yearMax = params.get("yearMax");
+    if (yearMax) next.yearMax = parseInt(yearMax, 10);
+    const bustMin = params.get("bustMin");
+    if (bustMin) next.bustMin = parseInt(bustMin, 10);
+    const bustMax = params.get("bustMax");
+    if (bustMax) next.bustMax = parseInt(bustMax, 10);
+    const search = params.get("search");
+    if (search) next.search = search;
+    window.setTimeout(() => {
+      setFilters(next);
+      canSyncUrl.current = true;
+    }, 0);
+  }, []);
+
+  useEffect(() => {
+    fetch("/data/search.json")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`search index ${r.status}`))))
+      .then((docs: EventSearchDocument[]) => setSearchDocs(docs))
+      .catch(() => setSearchDocs([]));
+  }, []);
+
+  useEffect(() => {
+    if (!canSyncUrl.current) return;
     const qs = new URLSearchParams();
     if (filters.agencies?.length) qs.set("agencies", filters.agencies.join(","));
     if (filters.documentTypes?.length) qs.set("documentTypes", filters.documentTypes.join(","));
@@ -39,8 +76,16 @@ export function BrowseTable({
     if (typeof filters.bustMin === "number" && filters.bustMin > 0) qs.set("bustMin", String(filters.bustMin));
     if (typeof filters.bustMax === "number" && filters.bustMax < 100) qs.set("bustMax", String(filters.bustMax));
     if (filters.search) qs.set("search", filters.search);
-    fetch(`/api/events?${qs}`).then((r) => r.json()).then((d) => setRows(d.events));
+    const next = qs.toString() ? `${window.location.pathname}?${qs.toString()}` : window.location.pathname;
+    window.history.replaceState(null, "", next);
   }, [filters]);
+
+  const searchIndex = useMemo(
+    () => (searchDocs && searchDocs.length > 0 ? createEventSearchIndex(searchDocs) : null),
+    [searchDocs]
+  );
+
+  const rows = useMemo(() => filterEventsClient(initial, filters, searchIndex), [initial, filters, searchIndex]);
 
   const activeCount = useMemo(() => {
     let n = 0;
