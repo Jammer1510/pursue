@@ -15,7 +15,7 @@ function init(): void {
   const redis = Redis.fromEnv();
   hourly = new Ratelimit({
     redis,
-    limiter: Ratelimit.slidingWindow(10, "1 h"),
+    limiter: Ratelimit.slidingWindow(20, "1 h"),
     prefix: "chat:h",
   });
   daily = new Ratelimit({

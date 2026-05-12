@@ -6,7 +6,7 @@ A floating, Gemini-powered research assistant that answers natural-language ques
 
 - Frontend: `<ChatLauncher>` mounted in `src/app/layout.tsx`, lazy-loads `<ChatPanel>` (next/dynamic, no SSR) so the chat bundle stays out of the initial page payload.
 - Backend: `POST /api/chat` on Node.js runtime. Reads `public/data/summaries.json` + `public/data/tags.json` (cached at module scope), stuffs them into a single Gemini 2.5 Flash system prompt, and streams the response as Server-Sent Events.
-- Rate limiting: Upstash Redis (optional, recommended for prod). 10 messages per IP per hour, 50 per day.
+- Rate limiting: Upstash Redis (optional, recommended for prod). 20 messages per IP per hour, 50 per day.
 - Conversation persists in `sessionStorage` (key: `pursue.chat.history`), wiped when the tab closes.
 
 ## Get a free Gemini API key
@@ -78,7 +78,7 @@ Never commit a key. Pre-commit check: `git diff --staged` should never show a re
 ## Cost expectations
 
 - Gemini 2.5 Flash free tier: 1500 requests/day, more than enough for normal traffic
-- One conversation = several requests; with 10/hour rate limit per IP, a single user can produce at most 240 requests/day
+- One conversation = several requests; with the 20/hour and 50/day rate limits, a single IP can produce at most 50 chat requests/day
 - If you exceed the free tier, Gemini bills are ~$0.10–$0.30 per million input tokens
 - Upstash free tier: 10k commands/day. Each chat request issues 2 commands (hourly + daily limit checks). Capacity ≈ 5000 chat requests/day before the paid tier kicks in.
 
