@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PURSUE.ARCHIVE
 
-## Getting Started
+PURSUE.ARCHIVE is a public browser for a curated set of 120 UAP-related records. It turns a locally ingested SQLite archive into a static, shareable Next.js site with timeline, map, browse, detail, connection, translation, and scoring views.
 
-First, run the development server:
+Live site: https://pursue-ten.vercel.app/
+
+## Features
+
+- Timeline view of all ingested records.
+- Map view for geocoded event locations.
+- Browse table with client-side filtering and MiniSearch search.
+- Event detail panels with claims, source links, summaries, tags, bust scoring, and cover-up scoring.
+- Connections view for finding events that share extracted tags.
+- English and Chinese UI/content fields where translations are available.
+- Static JSON deployment path for Vercel: no runtime database and no production API keys required.
+
+## Tech Stack
+
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS
+- SQLite via `better-sqlite3` for local ingest/development
+- Static JSON files under `public/data` for deployed reads
+- MiniSearch for browser-side Browse search
+- Leaflet / React Leaflet for maps
+
+## Data Model
+
+The local ingest pipeline writes records to `data/pursue.db`, which is intentionally gitignored. Sprint 7 adds a static export workflow that generates committed JSON files under `public/data`:
+
+- `public/data/summaries.json`
+- `public/data/locations.json`
+- `public/data/tags.json`
+- `public/data/search.json`
+- `public/data/events/*.json`
+
+Production reads from those static JSON files. Local development defaults to SQLite unless `NEXT_PUBLIC_DATA_SOURCE=json` is set.
+
+## Local Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run against the local SQLite database:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run against the static JSON export, matching the deployed data path:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+NEXT_PUBLIC_DATA_SOURCE=json npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open http://localhost:3000.
 
-## Learn More
+## Data Refresh
 
-To learn more about Next.js, take a look at the following resources:
+The ingest workflow depends on local source data and optional local environment variables. Production does not need those secrets because enriched fields are baked into the generated JSON.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run ingest and rebuild static JSON:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run refresh
+```
 
-## Deploy on Vercel
+Or rebuild static JSON from the existing local SQLite database:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build:data
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Commit the regenerated `public/data` files after a data refresh.
+
+## Build and Deploy
+
+Build locally:
+
+```bash
+npm run build
+```
+
+Vercel settings:
+
+- Framework: Next.js
+- Build command: `npm run build`
+- Output directory: default
+- Environment variables: none required for the public site
+
+On Vercel, `build:data` detects the Vercel environment and uses the committed `public/data` JSON instead of trying to regenerate from the gitignored SQLite database.
+
+## Notes on Data and Sources
+
+The project code is licensed under MIT. The source documents, extracted records, linked URLs, and public-record content may have their own source terms or public-record status. This repository does not claim ownership over original government/public source materials referenced by the dataset.
+
+Generated metadata such as tags, translations, summaries, and scoring fields are included to make the archive easier to browse. They should be treated as research aids, not authoritative determinations.
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
