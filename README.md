@@ -1,6 +1,6 @@
 # PURSUE.ARCHIVE
 
-PURSUE.ARCHIVE is a public browser for a curated set of 120 UAP-related records. It turns a locally ingested SQLite archive into a static, shareable Next.js site with timeline, map, browse, detail, connections, translation, and scoring views.
+PURSUE.ARCHIVE is a public browser for a curated set of 120 UAP-related records. It turns a locally ingested SQLite archive into a static, shareable Next.js site with timeline, map, browse, detail, connections, translation, scoring, and citation-aware AI chat views.
 
 Live site: https://pursue-ten.vercel.app/
 
@@ -13,7 +13,7 @@ Live site: https://pursue-ten.vercel.app/
 - Connections view for finding events that share extracted tags.
 - English and Chinese UI/content fields where translations are available.
 - Static JSON deployment path for Vercel: no runtime database and no production API keys required.
-- Optional Gemini-powered chatbot for natural-language queries over the archive (see [docs/CHATBOT.md](docs/CHATBOT.md)).
+- Optional Gemini-powered chatbot for natural-language queries over the archive, with event citations that deep-link into detail panels.
 
 ## Tech Stack
 
@@ -25,6 +25,8 @@ Live site: https://pursue-ten.vercel.app/
 - Static JSON files under `public/data` for deployed reads
 - MiniSearch for browser-side Browse search
 - Leaflet / React Leaflet for maps
+- Gemini API for optional archive chat and local enrichment
+- Upstash Redis for optional chat rate limiting
 
 ## Data Model
 
@@ -37,6 +39,18 @@ The local ingest pipeline writes records to `data/pursue.db`, which is intention
 - `public/data/events/*.json`
 
 Production reads from those static JSON files. Local development defaults to SQLite unless `NEXT_PUBLIC_DATA_SOURCE=json` is set.
+
+## AI Chatbot
+
+The chat panel lets users ask natural-language questions about the committed archive data. Answers can cite records with clickable event references, so users can inspect the underlying event detail without leaving the current view.
+
+Chat is optional and separate from the static archive. The timeline, map, browse, connections, and event pages work without any production secrets. To enable chat in a deployment, set:
+
+- `GEMINI_API_KEY`: required for `/api/chat`
+- `UPSTASH_REDIS_REST_URL`: optional, enables hosted rate limiting
+- `UPSTASH_REDIS_REST_TOKEN`: optional, enables hosted rate limiting
+
+If the Gemini key is missing, the archive still builds and serves normally, but chat requests will return a configuration error. The repository includes `.env.example` placeholders only; real `.env` files are gitignored.
 
 ## Local Development
 
@@ -91,7 +105,8 @@ Vercel settings:
 - Framework: Next.js
 - Build command: `npm run build`
 - Output directory: default
-- Environment variables: none required for the public site
+- Environment variables for the core archive: none required
+- Environment variables for chat: `GEMINI_API_KEY`; optional `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`
 
 On Vercel, `build:data` detects the Vercel environment and uses the committed `public/data` JSON instead of trying to regenerate from the gitignored SQLite database.
 
