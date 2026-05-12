@@ -14,9 +14,9 @@ import { useIsMobile } from "@/lib/use-media-query";
 
 function pinColor(score: number | null): string {
   if (score == null) return "#52525b";
-  if (score >= 70) return "#a1a1aa";
+  if (score >= 70) return "#34d399";
   if (score >= 30) return "#fbbf24";
-  return "#34d399";
+  return "#fb7185";
 }
 
 export function MapView({ events, locations }: { events: EventSummary[]; locations: EventLocation[] }) {

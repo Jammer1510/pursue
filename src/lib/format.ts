@@ -39,9 +39,9 @@ export interface BustClasses {
 
 export function bustClasses(score: number | null, locale: Locale = "en"): BustClasses {
   if (score == null) return { text: "text-zinc-400", bg: "bg-zinc-800", border: "border-zinc-700", label: t("bust.unassessed", locale) };
-  if (score >= 70) return { text: "text-zinc-300", bg: "bg-zinc-800", border: "border-zinc-600", label: `${score} · ${t("bust.mundane", locale)}` };
+  if (score >= 70) return { text: "text-emerald-300", bg: "bg-emerald-950/40", border: "border-emerald-700", label: `${score} · ${t("bust.mundane", locale)}` };
   if (score >= 30) return { text: "text-amber-300", bg: "bg-amber-950/40", border: "border-amber-800", label: `${score} · ${t("bust.uncertain", locale)}` };
-  return { text: "text-emerald-300", bg: "bg-emerald-950/40", border: "border-emerald-700", label: `${score} · ${t("bust.weird", locale)}` };
+  return { text: "text-rose-300", bg: "bg-rose-950/40", border: "border-rose-700", label: `${score} · ${t("bust.weird", locale)}` };
 }
 
 export function coverUpClasses(score: number | null, locale: Locale = "en"): BustClasses {
