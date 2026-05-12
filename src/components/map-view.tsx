@@ -136,7 +136,7 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
         <OffMapDrawer offEarth={offEarth} unknown={unknown} onSelect={setSelectedId} />
       </div>
       {isMobile ? (
-        <EventDetailPanel selectedId={selectedId} onClose={() => setSelectedId(null)} />
+        <EventDetailPanel selectedId={selectedId} onClose={() => setSelectedId(null)} side="bottom" />
       ) : (
         <EventDetailInline
           selectedId={selectedId}
