@@ -24,7 +24,7 @@ export function TopNav() {
       <div className="flex items-center gap-2 sm:gap-3">
         <LocaleToggle />
         <span className="hidden font-mono text-[10px] uppercase tracking-widest text-zinc-600 sm:inline-block">
-          local · v0
+          open archive
         </span>
       </div>
     </header>
