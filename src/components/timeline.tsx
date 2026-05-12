@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { EventSummary } from "@/lib/types";
 import { eventYear } from "@/lib/format";
 import { EventCard } from "./event-card";
@@ -17,13 +18,14 @@ function clearEventParam(): void {
 
 export function Timeline({ events }: { events: EventSummary[] }) {
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const raw = new URLSearchParams(window.location.search).get("event");
+    const raw = searchParams.get("event");
     if (!raw) return;
     const id = parseInt(raw, 10);
     if (Number.isFinite(id)) setSelectedId(id);
-  }, []);
+  }, [searchParams]);
 
   const handleClose = () => {
     setSelectedId(null);

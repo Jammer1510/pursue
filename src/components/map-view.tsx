@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Map as LeafletMap } from "leaflet";
 import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -24,6 +25,7 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
   const isMobile = useIsMobile();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const mapRef = useRef<LeafletMap | null>(null);
+  const searchParams = useSearchParams();
 
   const handleCollapseChange = () => {
     requestAnimationFrame(() => {
@@ -39,11 +41,11 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
   }, []);
 
   useEffect(() => {
-    const raw = new URLSearchParams(window.location.search).get("event");
+    const raw = searchParams.get("event");
     if (!raw) return;
     const id = parseInt(raw, 10);
     if (Number.isFinite(id)) setSelectedId(id);
-  }, []);
+  }, [searchParams]);
 
   const handleClose = () => {
     setSelectedId(null);

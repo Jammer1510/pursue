@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { EventFilters, EventSummary } from "@/lib/types";
 import {
   createEventSearchIndex,
@@ -35,6 +36,7 @@ export function BrowseTable({
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const { locale } = useLocale();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -53,11 +55,6 @@ export function BrowseTable({
     if (bustMax) next.bustMax = parseInt(bustMax, 10);
     const search = params.get("search");
     if (search) next.search = search;
-    const eventParam = params.get("event");
-    if (eventParam) {
-      const id = parseInt(eventParam, 10);
-      if (Number.isFinite(id)) setSelectedId(id);
-    }
     window.setTimeout(() => {
       setFilters(next);
       canSyncUrl.current = true;
@@ -94,6 +91,13 @@ export function BrowseTable({
     const next = qs.toString() ? `${window.location.pathname}?${qs.toString()}` : window.location.pathname;
     window.history.replaceState(null, "", next);
   }, [filters]);
+
+  useEffect(() => {
+    const raw = searchParams.get("event");
+    if (!raw) return;
+    const id = parseInt(raw, 10);
+    if (Number.isFinite(id)) setSelectedId(id);
+  }, [searchParams]);
 
   const searchIndex = useMemo(
     () => (searchDocs && searchDocs.length > 0 ? createEventSearchIndex(searchDocs) : null),
