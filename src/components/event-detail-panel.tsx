@@ -32,7 +32,7 @@ export function EventDetailPanel({
   const isBottom = side === "bottom";
   const className =
     isBottom
-      ? "max-h-[92vh] flex flex-col rounded-t-lg border-t border-zinc-800 bg-zinc-950 text-zinc-200"
+      ? "max-h-[85vh] flex flex-col rounded-t-lg border-t border-zinc-800 bg-zinc-950 text-zinc-200 mt-[env(safe-area-inset-top)]"
       : "w-full overflow-y-auto border-zinc-800 bg-zinc-950 text-zinc-200 sm:!max-w-3xl lg:!max-w-4xl xl:!max-w-5xl";
 
   return (
