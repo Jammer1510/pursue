@@ -5,6 +5,7 @@ import "./globals.css";
 import { DEFAULT_LOCALE, LOCALE_COOKIE, isLocale, type Locale } from "@/lib/i18n";
 import { LocaleProvider } from "@/components/locale-provider";
 import { TopNav } from "@/components/top-nav";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default async function RootLayout({
           <TopNav />
           <main className="flex-1">{children}</main>
         </LocaleProvider>
+        <Analytics />
       </body>
     </html>
   );
