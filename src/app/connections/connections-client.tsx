@@ -153,7 +153,7 @@ export function ConnectionsClient({ aggregates }: { aggregates: TagAggregate[] }
                   key={`${s.category}:${s.tag}`}
                   type="button"
                   onClick={() => toggle(s.category, s.tag)}
-                  className="rounded border border-emerald-500 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] text-emerald-200 hover:bg-emerald-500/20"
+                  className="rounded border border-emerald-500 bg-emerald-500/10 px-2.5 py-1 font-mono text-[11px] text-emerald-200 hover:bg-emerald-500/20"
                   title="Remove"
                 >
                   {s.category}:{s.tag} ✕
