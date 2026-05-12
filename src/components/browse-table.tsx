@@ -53,11 +53,26 @@ export function BrowseTable({
     if (bustMax) next.bustMax = parseInt(bustMax, 10);
     const search = params.get("search");
     if (search) next.search = search;
+    const eventParam = params.get("event");
+    if (eventParam) {
+      const id = parseInt(eventParam, 10);
+      if (Number.isFinite(id)) setSelectedId(id);
+    }
     window.setTimeout(() => {
       setFilters(next);
       canSyncUrl.current = true;
     }, 0);
   }, []);
+
+  const handleClose = () => {
+    setSelectedId(null);
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("event")) return;
+    url.searchParams.delete("event");
+    const qs = url.searchParams.toString();
+    window.history.replaceState(null, "", qs ? `${url.pathname}?${qs}` : url.pathname);
+  };
 
   useEffect(() => {
     fetch("/data/search.json")
@@ -201,7 +216,7 @@ export function BrowseTable({
           </TableBody>
         </Table>
       </div>
-      <EventDetailPanel selectedId={selectedId} onClose={() => setSelectedId(null)} />
+      <EventDetailPanel selectedId={selectedId} onClose={handleClose} />
     </div>
   );
 }

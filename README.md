@@ -13,6 +13,7 @@ Live site: https://pursue-ten.vercel.app/
 - Connections view for finding events that share extracted tags.
 - English and Chinese UI/content fields where translations are available.
 - Static JSON deployment path for Vercel: no runtime database and no production API keys required.
+- Optional Gemini-powered chatbot for natural-language queries over the archive (see [docs/CHATBOT.md](docs/CHATBOT.md)).
 
 ## Tech Stack
 

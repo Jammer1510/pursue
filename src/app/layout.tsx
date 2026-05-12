@@ -7,6 +7,7 @@ import "./globals.css";
 import { DEFAULT_LOCALE, LOCALE_COOKIE, isLocale, type Locale } from "@/lib/i18n";
 import { LocaleProvider } from "@/components/locale-provider";
 import { TopNav } from "@/components/top-nav";
+import { ChatLauncher } from "@/components/chat";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,7 @@ export default async function RootLayout({
         <LocaleProvider initialLocale={initialLocale}>
           <TopNav />
           <main className="flex-1">{children}</main>
+          <ChatLauncher />
         </LocaleProvider>
         <Analytics />
         <SpeedInsights />

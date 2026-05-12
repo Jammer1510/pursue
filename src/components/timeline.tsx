@@ -1,13 +1,34 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { EventSummary } from "@/lib/types";
 import { eventYear } from "@/lib/format";
 import { EventCard } from "./event-card";
 import { EventDetailPanel } from "./event-detail-panel";
 
+function clearEventParam(): void {
+  if (typeof window === "undefined") return;
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has("event")) return;
+  url.searchParams.delete("event");
+  const search = url.searchParams.toString();
+  window.history.replaceState(null, "", search ? `${url.pathname}?${search}` : url.pathname);
+}
+
 export function Timeline({ events }: { events: EventSummary[] }) {
   const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get("event");
+    if (!raw) return;
+    const id = parseInt(raw, 10);
+    if (Number.isFinite(id)) setSelectedId(id);
+  }, []);
+
+  const handleClose = () => {
+    setSelectedId(null);
+    clearEventParam();
+  };
 
   const grouped = useMemo(() => {
     const map = new Map<string, EventSummary[]>();
@@ -44,7 +65,7 @@ export function Timeline({ events }: { events: EventSummary[] }) {
           </section>
         ))}
       </div>
-      <EventDetailPanel selectedId={selectedId} onClose={() => setSelectedId(null)} />
+      <EventDetailPanel selectedId={selectedId} onClose={handleClose} />
     </>
   );
 }

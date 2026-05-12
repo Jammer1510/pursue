@@ -39,6 +39,23 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
   }, []);
 
   useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get("event");
+    if (!raw) return;
+    const id = parseInt(raw, 10);
+    if (Number.isFinite(id)) setSelectedId(id);
+  }, []);
+
+  const handleClose = () => {
+    setSelectedId(null);
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("event")) return;
+    url.searchParams.delete("event");
+    const qs = url.searchParams.toString();
+    window.history.replaceState(null, "", qs ? `${url.pathname}?${qs}` : url.pathname);
+  };
+
+  useEffect(() => {
     requestAnimationFrame(() => mapRef.current?.invalidateSize());
   }, [isMobile]);
 
@@ -136,11 +153,11 @@ export function MapView({ events, locations }: { events: EventSummary[]; locatio
         <OffMapDrawer offEarth={offEarth} unknown={unknown} onSelect={setSelectedId} />
       </div>
       {isMobile ? (
-        <EventDetailPanel selectedId={selectedId} onClose={() => setSelectedId(null)} side="bottom" />
+        <EventDetailPanel selectedId={selectedId} onClose={handleClose} side="bottom" />
       ) : (
         <EventDetailInline
           selectedId={selectedId}
-          onClose={() => setSelectedId(null)}
+          onClose={handleClose}
           onCollapseChange={handleCollapseChange}
         />
       )}
